@@ -20,7 +20,19 @@ class HelloWorldWorkflow
   # This is the entry point for the workflow
   def hello(name)
     # Use the activity client 'client' to invoke the say_hello activity
-    name = client.get_name
+    puts "Starting ....."
+    begin
+      name = client.get_name
+      #rescue ActivityTaskTimedOutException => e
+      #puts "this task timed out 'cuz no one responded"
+      rescue AWS::Flow::ActivityTaskTimedOutException => e
+      #puts "task failed"      # handle failure
+    rescue Exception => e 
+      puts e
+    ensure
+      puts "ensure it completes" 
+    end
+
     if client.say_hello(name) == 0
       client.say_goodbye(name)
     else
