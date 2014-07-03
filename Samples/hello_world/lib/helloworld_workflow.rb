@@ -20,7 +20,12 @@ class HelloWorldWorkflow
   # This is the entry point for the workflow
   def hello(name)
     # Use the activity client 'client' to invoke the say_hello activity
-    client.say_hello(name)
+    name = client.get_name
+    if client.say_hello(name) == 0
+      client.say_goodbye(name)
+    else
+      client.say_sayonara(name)
+    end
   end
 end
 
